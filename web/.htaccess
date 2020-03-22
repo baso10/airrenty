@@ -1,0 +1,30 @@
+# use mod_rewrite for pretty URL support
+RewriteEngine on
+# If a directory or a file exists, use the request directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !server-status
+# Otherwise forward the request to index.php
+RewriteRule . index.php
+
+<IfModule mod_autoindex.c>
+  Options -Indexes
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteCond %{SCRIPT_FILENAME} -d
+  RewriteCond %{SCRIPT_FILENAME} -f
+  RewriteRule "(^|/)\." - [F]
+</IfModule>
+
+<FilesMatch "(\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|htaccess|htpasswd|svn|git)|~)$">
+  Order allow,deny
+  Deny from all
+  Satisfy All
+</FilesMatch>
+
+<IfModule php5_module>
+  php_value session.cookie_httponly true
+  php_value session.use_only_cookies = 1
+  php_value session.cookie_secure = 1
+</IfModule>

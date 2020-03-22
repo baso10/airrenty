@@ -1,0 +1,230 @@
+* {
+  outline: 0;
+  margin: 0;
+  padding: 0; }
+
+html, * {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  /*min-width: 510px;*/
+}
+
+ul {
+  margin: 0;
+  padding: 0; }
+ul li {
+  list-style-type: none; }
+
+p {
+  font-weight: 400;
+  margin-bottom: 0;
+  font-size: 0.98rem;
+  line-height: 1.2; }
+
+::selection {
+  background-color: #4c84ff;
+  color: #ffffff; }
+
+button,
+a {
+  text-decoration: none;
+  transition: all 0.3s ease-in-out; }
+@media screen and (prefers-reduced-motion: reduce) {
+  button,
+  a {
+    transition: none; } }
+button:hover, button:focus, button:active,
+a:hover,
+a:focus,
+a:active {
+  box-shadow: none;
+  outline: none;
+  text-decoration: none; }
+
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer; }
+
+.main-header-login {
+  margin: 30px;
+  text-align: center;
+}
+.page-wrapper, .page-wrapper-login {
+  margin: 0 auto;
+  width: 100%;
+  /*min-width: 320px;*/
+  height: 100%;
+}
+.content-wrapper {
+  min-height: 300px;
+}
+.copyright {
+  padding-left: 0;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.termsAgree {
+  margin-bottom: 20px;
+}
+
+.form-row-buttons {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.cancel-button {
+  vertical-align: middle;
+  margin-left: 20px;
+}
+
+.panel-table {
+  overflow: auto;
+}
+
+.pagination-wrap {
+  text-align: center;
+  min-height: 30px;
+}
+ul.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+ul.pagination li {
+  display: inline-block;
+}
+
+.grid-view .summary {
+  float: right;
+}
+
+@media (max-width: 1000px) {
+  .grid-view .summary {
+    float: none;
+  }
+}
+
+.navbar-brand {
+  margin-right: 2rem;
+}
+.navbar-brand img {
+  width: 300px;
+}
+
+.content-wrapper {
+  border-radius: 4px;
+  box-shadow: 0 0 6px 3px rgba(0,0,0,.2);
+  padding: 10px;
+  margin: 7px;
+}
+
+.btn-logout {
+  padding-left: 0;
+}
+
+.bg-info {
+  background-color: #0460bb !important;
+}
+
+.table-info, .table-info > td, .table-info > th {
+  background-color: #4ca4fb;
+}
+.table-striped tbody tr:nth-of-type(2n+1).table-info,
+.table-striped tbody tr:nth-of-type(2n+1).table-info > td,
+.table-striped tbody tr:nth-of-type(2n+1).table-info > th{
+  background-color: #4ca4fb;
+}
+
+#map-wrapper {
+  width: 100%;
+  height: 100%;
+}
+#map { 
+  height: 75vh; 
+  width: 100%;
+}
+
+.map-popup {
+  font-size: 20px;
+}
+
+.map-popup-value {
+  padding-left: 10px;
+}
+
+
+.headerBrand {
+  display: flex;
+  align-items: center;
+}
+.headerBrandLabel {
+  padding-left: 10px;
+}
+.headerCollapseDiv {
+  margin-right: 220px;
+}
+
+.center-table {
+  margin: 0 auto;
+}
+
+.airport-view-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.actionColumn a {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: black;
+}
+.index-actions {
+  text-align: right; 
+  width: 100%;
+  margin-bottom: 5px;
+}
+.airplane-view-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.fuel-list-airport-table {
+  margin-top: 20px;
+}
+.text-row {
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 480px) {
+    .kv-table-wrap th {
+        display: none;
+    }
+}
+@media screen and (max-width: 780px) {
+    .table-sm th, .table-sm td {
+        font-size: 10px;
+    }
+}
+.shortTitle {
+    display: none;
+}
+@media screen and (max-width: 480px) {
+    .longTitle {
+        display: none;
+    }
+    .shortTitle {
+        display: block;
+    }
+}
