@@ -27,4 +27,3 @@ phpunit.phar
 /phpunit.xml
 /config/customConfig.php
 /dist
-/vendor/
