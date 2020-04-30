@@ -40,5 +40,7 @@ return [
     'Back to map' => 'Zurück zur Karte',
     'Tail number' => 'Kenn-zeichen',
     'About' => 'Über uns',
+    'Email' => 'E-mail',
+    'Password' => 'Kennwort'
 ];
 

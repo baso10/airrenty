@@ -1,5 +1,8 @@
 <?php
+
 use yii\helpers\Html;
+
+$verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'token' => $user->confirmation_token]);
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tbody>
@@ -15,16 +18,17 @@ use yii\helpers\Html;
               <td>
                 <p style="color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;">
 
-                  <?php echo Yii::t("email", "Your account has been successfully created."); ?>
-                  <br/>
-                  <br/>
-                  <?php echo Yii::t("email", "Here are the details for the account:"); ?>
-                  <br/>
-                  <?php echo Yii::t("email", "Username:"); ?> <?= $username ?>
-                  <br/>
-                  <br/>
-                  
+                  <?= Yii::t("email", "Your account has been successfully created."); ?>
                 </p>
+                <br/>
+                <br/>
+                <p><?= Yii::t("email", "Follow the link below to verify your email"); ?></p>
+
+                <p><?= Html::a(Html::encode($verifyLink), $verifyLink) ?></p>
+                <br/>
+                <br/>
+
+
 
               </td>
             </tr>

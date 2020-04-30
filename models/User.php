@@ -21,13 +21,24 @@ namespace app\models;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
+use app\components\BBNowExpression;
 
 class User extends BBActiveRecord implements IdentityInterface {
+
+  const STATUS_WAITING_CONFIRMATION = 0;
+  const STATUS_ACTIVE = 1;
+  const STATUS_DELETED = 5;
 
   public static function tableName() {
     return '{{%user}}';
   }
 
+  public function rules() {
+    return [
+        [['created_time'], 'default', 'value'=> new BBNowExpression()],
+    ];
+  }
+  
   /**
    * @inheritdoc
    */
@@ -58,9 +69,15 @@ class User extends BBActiveRecord implements IdentityInterface {
    * @param string $token password reset token
    * @return static|null
    */
-  public static function findByRecovery_token($token) {
+  public static function findByRecoveryToken($token) {
     return static::findOne([
                 'recovery_token' => $token
+    ]);
+  }
+
+  public static function findByConfirmationToken($token) {
+    return static::findOne([
+                'confirmation_token' => $token
     ]);
   }
 
@@ -123,6 +140,10 @@ class User extends BBActiveRecord implements IdentityInterface {
    */
   public function removePasswordResetToken() {
     $this->recovery_token = null;
+  }
+
+  public function generateEmailVerificationToken() {
+    $this->confirmation_token = Yii::$app->security->generateRandomString() . '_' . time();
   }
 
 }

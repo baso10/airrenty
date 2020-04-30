@@ -33,7 +33,7 @@ $config = [
                   'traceLevel' => YII_DEBUG ? 3 : 0,
                   'targets' => [
                       [
-                          'class' => 'yii\log\FileTarget',
+                          'class' => yii\log\FileTarget::class,
                           'levels' => ['error', 'warning'],
                       ],
                       [
@@ -43,16 +43,22 @@ $config = [
                   ],
         ],
         'db' => [
-            'class' => 'yii\db\Connection',
+            'class' => yii\db\Connection::class,
             'charset' => 'utf8',
+        ],
+        'mailer' => [
+           'class' => yii\swiftmailer\Mailer::class,
+           // send all mails to a file by default. You have to set
+           // 'useFileTransport' to false and configure a transport
+           // for the mailer to send real emails.
+           'useFileTransport' => true,
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'about' => 'site/about',
                 'airplanes' => 'airplane/index',
-                'impressum' => 'site/legal',
+                '<action>'=>'site/<action>', 
             ]
         ],
         'assetManager' => isset($params["assetManager"]) ? $params["assetManager"] : [
@@ -81,6 +87,11 @@ $config = [
         // 'downloadAction' => 'gridview/export/download',
         // 'i18n' => []
         ]
+    ],
+    'container' => [
+        'definitions' => [
+            'kartik\select2\Select2' => ['pluginLoading' => false]
+        ],
     ],
 ];
 

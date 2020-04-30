@@ -24,6 +24,7 @@ $menuItems = [
     ['label' => Yii::t("app", "Airplanes"), 'url' => ['/airplane/index']],
     ['label' => 'Organisations', 'url' => ['/organisation/index'], 'visible' => !Yii::$app->user->isGuest],
     ['label' => Yii::t("app", "About"), 'url' => ['/site/about']],
+    ['label' => Yii::t("app", "Register"), 'url' => ['/site/register']],
 ];
 if (!Yii::$app->user->isGuest) {
   $menuItems[] = [

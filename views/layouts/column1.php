@@ -14,13 +14,7 @@ $this->beginContent('@app/views/layouts/main.php');
   <header>
 
     <?= $this->render("menu") ?>
-
-
-
   </header>
-
-
-
 
   <div class="content-wrapper">
     <div class="content">

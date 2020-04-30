@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\select2\Select2;
 use app\models\Airport;
-use app\models\Organisation;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Airplane */
