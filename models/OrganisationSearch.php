@@ -67,6 +67,10 @@ class OrganisationSearch extends Organisation {
             ]
         ],
     ]);
+    
+    $query->andFilterWhere([
+        't.created_user_id' => $this->created_user_id,
+    ]);
 
     if (!($this->load($params) && $this->validate())) {
       return $dataProvider;

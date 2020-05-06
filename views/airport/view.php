@@ -12,11 +12,15 @@ $this->title = "AirRenty.com";
 <div class="site-index">
   <div class="container-fluid"> 
     <div class="airport-view-wrapper">
-      <?= Html::a(Html::tag("i", "", ["class" => "fas fa-long-arrow-alt-left"]) . " " . Yii::t("app", "Back to map"), ["/"]); ?>
-
+      <div>
+        <?= Html::a(Html::tag("i", "", ["class" => "fas fa-long-arrow-alt-left"]) . " " . Yii::t("app", "Back to map"), ["/"]); ?>
+      </div>
+      
       <h3><?= Html::encode($model->code_name) ?> - <?= Html::encode($model->name) ?></h3>
 
-      <?= Html::a(Html::encode($model->web_page), $model->web_page, ["target" => "_blank"]) ?>
+      <div>
+        <?= Html::a(Html::encode($model->web_page), $model->web_page, ["target" => "_blank"]) ?>
+      </div>
 
       <table class="center-table fuel-list-airport-table">
         <?php if (!empty($model->price_fuel91)) : ?>
@@ -91,28 +95,6 @@ $this->title = "AirRenty.com";
                 'label' => Html::tag("span", Yii::t("app", "Seats"), ["class" => "longTitle"]) .
                 Html::tag("span", Yii::t("app", "Seats no"), ["class" => "shortTitle"]),
                 'encodeLabel' => false,
-            ],
-            [
-                'class' => ActionColumn::class,
-                'visible' => !Yii::$app->user->isGuest,
-                'header' => false,
-                'noWrap' => true,
-                'contentOptions' => [
-                    'class' => 'actionColumn'
-                ],
-                'urlCreator' => function( $action, $model, $key, $index ) {
-
-                  if ($action == "view") {
-
-                    return Url::to(['view', 'id' => $model->code_name]);
-                  } else if ($action == "update") {
-
-                    return Url::to(['update', 'id' => $model->code_name]);
-                  } else if ($action == "delete") {
-
-                    return Url::to(['delete', 'id' => $model->code_name]);
-                  }
-                }
             ],
         ],
         'responsiveWrap' => false,

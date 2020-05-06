@@ -34,7 +34,7 @@ use app\models\Airport;
           'data' => ArrayHelper::map(Airport::find()->all(), 'id', 'codeNameWithName'),
           'options' => ['placeholder' => 'Select airport ...'],
           'pluginOptions' => [
-              'allowClear' => true
+              'allowClear' => false
   ]])
       ?>
 
@@ -44,9 +44,9 @@ use app\models\Airport;
 
 
   <div class="form-group">
-    <?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?= Html::submitButton($model->isNewRecord ? Yii::t("app", "Add") : Yii::t("app", "Update"), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
-    <?= Html::a("Cancel", ["index"]); ?>
+    <?= Html::a(Yii::t("app", "Back"), ["cancel"], ["class" => "form-back-button"]); ?>
   </div>
 
   <?php ActiveForm::end(); ?>

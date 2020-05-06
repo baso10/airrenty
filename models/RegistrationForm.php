@@ -22,6 +22,8 @@ use Yii;
 use yii\base\Model;
 use app\models\User;
 use app\models\Organisation;
+use app\components\BBHelper;
+use app\components\BBEmail;
 
 /**
  *
@@ -45,8 +47,7 @@ class RegistrationForm extends Model {
         ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
         ['password', 'required'],
         ['password', 'string', 'min' => 4],
-        
-        [['name', 'web_page', 'airport_id'], 'required'],
+        [['name', 'web_page', 'airport_id', 'description'], 'required'],
         [['name', 'web_page'], 'string', 'max' => 1000],
         ['airport_id', 'integer'],
         [['description'], 'safe'],
@@ -67,68 +68,77 @@ class RegistrationForm extends Model {
   public function register() {
     //check resend email
     $existingUser = User::findByUsername($this->email);
-    if(isset($existingUser)) {
-      if($existingUser->status == User::STATUS_WAITING_CONFIRMATION) {
+    if (isset($existingUser)) {
+      if ($existingUser->status == User::STATUS_WAITING_CONFIRMATION) {
         //allow it
         $existingUser->setPassword($this->password);
-        if(empty($existingUser->confirmation_token)) {
+        if (empty($existingUser->confirmation_token)) {
           $existingUser->generateEmailVerificationToken();
         }
-        
-        return $existingUser->save() && $this->sendEmail($existingUser);
+
+        return $existingUser->save() && BBEmail::sendRegistrationEmail($existingUser);
       }
     }
-    
+
     if (!$this->validate()) {
       return null;
     }
-    
+
     $saved = true;
 
-    $user = new User();
-    $user->username = $this->email;
-    $user->email = $this->email;
-    $user->setPassword($this->password);
-    $user->generateAuthKey();
-    $user->generateEmailVerificationToken();
-    
-    $saved &= $user->save();
-    
-    //save organisation
-    $organisation = new Organisation();
-    $organisation->name = $this->name;
-    $organisation->description = $this->description;
-    $organisation->web_page = $this->web_page;
-    $organisation->airport_id = $this->airport_id;
-    $organisation->created_user_id = $user->id;
-    
-    $saved &= $organisation->save();
-    
-    
-    $saved &= $this->sendEmail($user);
-    return $saved; 
-  }
-
-  /**
-   * Sends confirmation email to user
-   * @param User $user user model to with email should be send
-   * @return bool whether the email was sent
-   */
-  protected function sendEmail($user) {
+    $transaction = User::getDb()->beginTransaction();
     try {
-      Yii::$app
-              ->mailer
-              ->compose('emailRegistration', ['user' => $user])
-              ->setFrom(Yii::$app->params['email_from'])
-              ->setReplyTo(Yii::$app->params['email_replyTo'])
-              ->setTo($this->email)
-              ->setSubject(Yii::t("app", "Welcome"))
-              ->send();
-    } catch (\Exception $ex) {
-      Yii::error($ex->getMessage());
+
+      $user = new User();
+      $user->username = $this->email;
+      $user->email = $this->email;
+      $user->setPassword($this->password);
+      $user->generateAuthKey();
+      $user->status = User::STATUS_ACTIVE;
+
+      if (Yii::$app->params["user_enable_email_confirmation"]) {
+        $user->status = User::STATUS_WAITING_CONFIRMATION;
+        $user->generateEmailVerificationToken();
+      }
+
+      $user->registered_ip = BBHelper::getIP();
+
+      $saved = $saved && $user->save();
+
+      if (!$saved) {
+        Yii::error("User not saved. " . json_encode($user->getErrors()));
+      }
+
+      //save organisation
+      $organisation = new Organisation();
+      $organisation->name = $this->name;
+      $organisation->description = $this->description;
+      $organisation->web_page = $this->web_page;
+      $organisation->airport_id = $this->airport_id;
+      $organisation->created_user_id = $user->id;
+
+      $saved = $saved && $organisation->save();
+
+      if (!$saved) {
+        Yii::error("Organisation not saved. " . json_encode($organisation->getErrors()));
+      }
+
+      if ($saved) {
+        $transaction->commit();
+      } else {
+        $transaction->rollBack();
+      }
+    } catch (\Throwable $e) {
+      $transaction->rollBack();
+      Yii::error($e->getMessage() . $e->getTraceAsString());
+      throw $e;
     }
 
-    return true;
+    if (Yii::$app->params["user_enable_email_confirmation"]) {
+      BBEmail::sendRegistrationEmail($user);
+    }
+
+    return $saved;
   }
 
 }

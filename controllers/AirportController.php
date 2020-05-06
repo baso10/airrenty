@@ -39,11 +39,6 @@ class AirportController extends BBController {
             'class' => AccessControl::className(),
             'rules' => [
                 [
-                    'actions' => ['create', 'update', 'delete'],
-                    'allow' => true,
-                    'roles' => ['@'],
-                ],
-                [
                     'actions' => ['view'],
                     'allow' => true,
                 ],
@@ -60,7 +55,7 @@ class AirportController extends BBController {
         ],
     ];
   }
-
+  
   /**
    * @return string
    */

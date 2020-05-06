@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+
+$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $user->recovery_token]);
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tbody>
@@ -16,10 +18,9 @@ use yii\helpers\Html;
               <td>
                 <p style="color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;">
 
-                  If you requested to change the password, please reset your password here:
+                  <p>Follow the link below to reset your password:</p>
                   <br/>
-                  <br/>
-                  <?= Html::a($resetUrl, $resetUrl) ?>
+                  <?= Html::a(Html::encode($resetLink), $resetLink) ?>
 
                 </p>
               </td>

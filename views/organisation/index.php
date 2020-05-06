@@ -35,7 +35,7 @@ $this->title = 'AirRenty.com';
                 'attribute' => 'description',
             ],
             [
-                'attribute' => 'airport',
+                'attribute' => 'airport_id',
                 'value' => 'airport.name'
             ],
             [

@@ -89,4 +89,7 @@ class BBController extends Controller {
     return new $this->_model;
   }
 
+  public function actionCancel() {
+    return $this->redirect(['index']);
+  }
 }

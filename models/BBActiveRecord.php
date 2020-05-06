@@ -19,6 +19,8 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use app\components\BBNowExpression;
+use Yii;
 
 /**
  *
@@ -32,6 +34,26 @@ class BBActiveRecord extends ActiveRecord {
 
   public function lockTable() {
     $this->getDb()->createCommand("LOCK TABLE " . $this->tableName() . " IN EXCLUSIVE MODE")->execute();
+  }
+  
+  public function beforeSave($insert) {
+    if(!$insert) {
+      if($this->hasAttribute("modified_time")) {
+        $this->modified_time = new BBNowExpression(); 
+      }
+      if($this->hasAttribute("modified_user_id")) {
+        $this->modified_user_id = Yii::$app->user->getId(); 
+      }
+    } else {
+      if($this->hasAttribute("created_time")) {
+        $this->created_time = new BBNowExpression(); 
+      }
+      if($this->hasAttribute("created_user_id") && empty($this->created_user_id) && !empty(Yii::$app->user->getId())) {
+        $this->created_user_id = Yii::$app->user->getId(); 
+      }
+    }
+    
+    return parent::beforeSave($insert);
   }
 
 }

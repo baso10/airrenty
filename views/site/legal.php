@@ -11,18 +11,20 @@ $this->title = 'AirRenty.com';
     <div>
       <div class="text-row">
         <h5>Terms</h5>
-          These Terms of Use govern your use of website and provide information about the AirRenty Service, 
+        <br>
+          These Terms of Use govern your use of web site and provide information about the AirRenty Service, 
           outlined below. When you use AirRenty, you agree to these terms.
       </div>
 
       <div class="text-row">
-          The AirRenty Service is one of the Basic IT Products, provided to you by Basic IT s.p.. 
+          The AirRenty Service is one of the Basic IT Products, provided to you by Basic IT s.p.. (ID 89350847)
           These Terms of Use therefore constitute an agreement between you and Basic IT s.p.. 
       </div>
 
       <br>
       <div class="text-row">
         <h5>The Data Policy</h5>
+        <br>
         We do not collect or process any personal data
       </div>
       
@@ -30,6 +32,7 @@ $this->title = 'AirRenty.com';
       <br>
       <div class="text-row">
         <h5>Services</h5>
+        <br>
         All services are provided without warranty of any kind, 
         either express or implied. We do not represent that this Site will be 
         available 100% of the time to meet your needs. We will strive to provide 
@@ -46,6 +49,7 @@ $this->title = 'AirRenty.com';
         <br>
         <br>
         <h5>Limitation on Liability</h5>
+        <br>
         <p class="small">EXCEPT IN JURISDICTIONS WHERE SUCH PROVISIONS ARE RESTRICTED, IN NO EVENT WILL COMPANY OR ITS DIRECTORS, 
           EMPLOYEES OR AGENTS BE LIABLE TO YOU OR ANY THIRD PERSON FOR ANY INDIRECT, CONSEQUENTIAL, 
           EXEMPLARY, INCIDENTAL, SPECIAL OR PUNITIVE DAMAGES, INCLUDING FOR ANY LOST PROFITS OR LOST DATA 

@@ -16,6 +16,10 @@ body {
   /*min-width: 510px;*/
 }
 
+h1, h2, h3, h4, h5 {
+  display: inline-block;
+}
+
 ul {
   margin: 0;
   padding: 0; }
@@ -171,7 +175,7 @@ ul.pagination li {
   padding-left: 10px;
 }
 .headerCollapseDiv {
-  margin-right: 220px;
+  margin-right: 180px;
 }
 
 .center-table {
@@ -189,9 +193,8 @@ ul.pagination li {
   color: black;
 }
 .index-actions {
-  text-align: right; 
-  width: 100%;
   margin-bottom: 5px;
+  float: right;
 }
 .airplane-view-wrapper {
   text-align: center;
@@ -208,25 +211,25 @@ ul.pagination li {
 }
 
 @media screen and (max-width: 480px) {
-    .kv-table-wrap th {
-        display: none;
-    }
+  .kv-table-wrap th {
+    display: none;
+  }
 }
 @media screen and (max-width: 780px) {
-    .table-sm th, .table-sm td {
-        font-size: 10px;
-    }
+  .table-sm th, .table-sm td {
+    font-size: 10px;
+  }
 }
 .shortTitle {
-    display: none;
+  display: none;
 }
 @media screen and (max-width: 480px) {
-    .longTitle {
-        display: none;
-    }
-    .shortTitle {
-        display: block;
-    }
+  .longTitle {
+    display: none;
+  }
+  .shortTitle {
+    display: block;
+  }
 }
 
 .hint-block-above {
@@ -236,4 +239,59 @@ ul.pagination li {
 
 .control-label-with-hint {
   margin-bottom: 0;
+}
+
+.register-menu {
+  position: relative;
+}
+
+.register-menu-gratis {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  color: #ed2c28;
+  padding: 0;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.site-account {
+  text-align: center;
+}
+.login-no-account {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.alert {
+  margin: 0 auto;
+}
+@media (min-width: 800px) {
+  .alert {
+    width: 50%;
+  }
+}
+.form-back-button {
+  padding-left: 10px;
+}
+
+.airplane-view-image {
+  margin-bottom: 20px;
+}
+
+.airplane-view-description {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.airplane-view-wiki {
+  margin-bottom: 20px;
+}
+
+.login-forgot-password {
+  float: right;
+}
+.field-loginform-rememberme {
+  display: inline-block;
 }

@@ -18,58 +18,62 @@
 
 namespace app\models;
 
-use app\models\User;
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
-use app\components\BBNowExpression;
+use app\models\User;
 
-/**
- * Description of VerifyEmailForm
- *
- * @author baso10
- */
-class VerifyEmailForm extends Model {
+class ResetPasswordForm extends Model {
 
-  /**
-   * @var string
-   */
-  public $token;
-
-  /**
-   * @var User
-   */
+  public $password;
   private $_user;
 
   /**
-   * Creates a form model with given token.
+   * Creates a form model given a token.
    *
    * @param string $token
    * @param array $config name-value pairs that will be used to initialize the object properties
    * @throws InvalidArgumentException if token is empty or not valid
    */
-  public function __construct($token, array $config = []) {
+  public function __construct($token, $config = []) {
     if (empty($token) || !is_string($token)) {
-      throw new InvalidArgumentException('Verify email token cannot be blank.');
+      throw new InvalidArgumentException('Password reset token cannot be blank.');
     }
-    $this->_user = User::findByConfirmationToken($token);
+    $this->_user = User::findByRecoveryToken($token);
     if (!$this->_user) {
-      throw new InvalidArgumentException('Wrong verify email token.');
+      throw new InvalidArgumentException('Wrong password reset token.');
     }
     parent::__construct($config);
   }
   
-  
   /**
-     * Verify email
-     *
-     * @return User|null the saved model or null if saving fails
-     */
-    public function activateUser()
-    {
-        $user = $this->_user;
-        $user->status = User::STATUS_ACTIVE;
-        $user->removeConfirmationToken();
-        return $user->save(false) ? $user : null;
-    }
+   * {@inheritdoc}
+   */
+  public function rules() {
+    return [
+        ['password', 'required'],
+        ['password', 'string', 'min' => 4],
+    ];
+  }
+  
+  public function attributeLabels() {
+    return [
+        'password' => Yii::t("app", "New password"),
+    ];
+  }
+
+  /**
+   * Resets password.
+   *
+   * @return bool if password was reset.
+   */
+  public function resetPassword() {
+    $user = $this->_user;
+    $user->setPassword($this->password);
+    $user->removePasswordResetToken();
+
+    $saved = $user->save(false);
+    return $saved ? $user : false;
+  }
 
 }

@@ -23,6 +23,32 @@ use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
 use app\components\BBNowExpression;
 
+/**
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $email
+ * @property string $password_hash
+ * @property string $auth_key
+ * @property int|null $is_super_admin
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_enabled_time
+ * @property string|null $confirmation_token
+ * @property string|null $confirmation_sent_time
+ * @property string|null $confirmed_time
+ * @property string|null $recovery_token
+ * @property string|null $recovery_sent_time
+ * @property string|null $blocked_time
+ * @property string|null $registered_ip
+ * @property int|null $require_password_change
+ * @property string|null $password_last_change
+ * @property int|null $password_expire_days
+ * @property int|null $created_user_id
+ * @property string $created_time
+ * @property string|null $modified_time
+ * @property string|null $updated_time
+ * @property int $status
+ */
 class User extends BBActiveRecord implements IdentityInterface {
 
   const STATUS_WAITING_CONFIRMATION = 0;
@@ -35,10 +61,9 @@ class User extends BBActiveRecord implements IdentityInterface {
 
   public function rules() {
     return [
-        [['created_time'], 'default', 'value'=> new BBNowExpression()],
     ];
   }
-  
+
   /**
    * @inheritdoc
    */
@@ -133,6 +158,17 @@ class User extends BBActiveRecord implements IdentityInterface {
    */
   public function generatePasswordResetToken() {
     $this->recovery_token = Yii::$app->security->generateRandomString() . '_' . time();
+    $this->recovery_sent_time = new BBNowExpression();
+  }
+
+  public static function isPasswordResetTokenValid($token) {
+    if (empty($token)) {
+      return false;
+    }
+
+    $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+    $expire = Yii::$app->params['user_recover_token_valid_time'];
+    return $timestamp + $expire >= time();
   }
 
   /**
@@ -144,6 +180,11 @@ class User extends BBActiveRecord implements IdentityInterface {
 
   public function generateEmailVerificationToken() {
     $this->confirmation_token = Yii::$app->security->generateRandomString() . '_' . time();
+    $this->confirmation_sent_time = new BBNowExpression();
   }
 
+  public function removeConfirmationToken() {
+    $this->confirmation_token = null;
+    $this->confirmed_time = new BBNowExpression();
+  }
 }

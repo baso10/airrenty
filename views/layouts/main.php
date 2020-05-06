@@ -17,7 +17,7 @@ $this->beginPage()
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
+    <?= Yii::$app->user->isGuest ? '' : Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <meta name="description" content="<?= Yii::$app->params["site_description"] ?>">

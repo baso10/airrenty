@@ -1,8 +1,8 @@
 <?php
 
 $customConfig = [];
-if (file_exists(__DIR__ . '/customConfig.php')) {
-  $customConfig = include __DIR__ . '/customConfig.php';
+if (file_exists(__DIR__ . '/../customConfig.php')) {
+  $customConfig = include (__DIR__ . '/../customConfig.php');
 }
 return \yii\helpers\ArrayHelper::merge([
             'adminEmail' => '',

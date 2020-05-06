@@ -19,15 +19,32 @@
 namespace app\models;
 
 use Yii;
-use app\components\BBNowExpression;
-use app\models\FuelPrice;
 use app\models\Airplane;
 
 /**
  *
- * @property integer $id
- * @property integer $code_name
- * @property integer $name
+ * @property int $id
+ * @property string $code_name
+ * @property string $name
+ * @property float|null $lat
+ * @property float|null $lon
+ * @property string|null $web_page
+ * @property string|null $country
+ * @property int|null $order_num
+ * @property int $disabled
+ * @property int|null $created_user_id
+ * @property string|null $created_time
+ * @property string|null $modified_time
+ * @property int|null $modified_user_id
+ * @property int|null $landing_fee
+ * @property string|null $currency
+ * @property int|null $price_fuel100
+ * @property int|null $price_fuel91
+ * @property string|null $fuel_date
+ * @property string|null $codeNameWithName
+ *
+ * @property Airplane[] $airplanes
+ * @property Organisation[] $organisations
  *
  * @author baso10
  */
@@ -51,7 +68,7 @@ class Airport extends BBActiveRecord {
 
   public function rules() {
     return [
-        [['created_time'], 'default', 'value'=> new BBNowExpression()],
+        [['order_num'], 'default', 'value' => 1],
     ];
   }
   

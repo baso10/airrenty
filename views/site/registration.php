@@ -4,7 +4,7 @@
 /* @var $model \app\models\RegistrationForm */
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use kartik\form\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Airport;
 use kartik\select2\Select2;

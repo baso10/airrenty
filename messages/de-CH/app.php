@@ -41,6 +41,25 @@ return [
     'Tail number' => 'Kenn-zeichen',
     'About' => 'Über uns',
     'Email' => 'E-mail',
-    'Password' => 'Kennwort'
+    'Password' => 'Kennwort',
+    'Note' => 'Notiz',
+    'Free' => 'Gratis',
+    'Add airplane' => 'Flugzeug hinzufügen',
+    'or' => 'oder',
+    'Login' => 'Einloggen',
+    'Register' => 'Konto erstellen',
+    'Create account' => 'Konto erstellen',
+    'Remember me' => 'Angemeldet bleiben',
+    'No account?' => 'Kein Konto?',
+    'Create new account' => 'Neues Konto erstellen',
+    'Success' => 'Erfolg',
+    'per hour' => 'pro Stunde',
+    'Add' => 'Hinzufügen',
+    'Back' => 'Zurück',
+    'Update' => 'Aktualisieren',
+    'Cancel' => 'Abbrechen',
+    'Save' => 'Speichern',
+    'Update organisation' => 'Verein bearbeiten',
+    'Forgot your password?' => 'Passwort vergessen?'
 ];
 

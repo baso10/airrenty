@@ -21,44 +21,45 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-//            'class' => 'app\components\BBUser',
-            'identityClass' => 'app\models\User',
+            'class' => app\components\BBUser::class,
+            'identityClass' => app\models\User::class,
 //            'loginUrl' => ['user/login'],
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'log' => isset($params["log"]) ? $params["log"] : [
-                  'traceLevel' => YII_DEBUG ? 3 : 0,
-                  'targets' => [
-                      [
-                          'class' => yii\log\FileTarget::class,
-                          'levels' => ['error', 'warning'],
-                      ],
-                      [
-                          'class' => 'yii\log\SyslogTarget',
-                          'levels' => ['error', 'warning', 'info'],
-                      ],
-                  ],
+        'log' => isset($params["log"]) ? $params["log"] :
+        [
+    'traceLevel' => YII_DEBUG ? 3 : 0,
+    'targets' => [
+        [
+            'class' => yii\log\FileTarget::class,
+            'levels' => ['error', 'warning'],
+        ],
+        [
+            'class' => 'yii\log\SyslogTarget',
+            'levels' => ['error', 'warning', 'info'],
+        ],
+    ],
         ],
         'db' => [
             'class' => yii\db\Connection::class,
             'charset' => 'utf8',
         ],
         'mailer' => [
-           'class' => yii\swiftmailer\Mailer::class,
-           // send all mails to a file by default. You have to set
-           // 'useFileTransport' to false and configure a transport
-           // for the mailer to send real emails.
-           'useFileTransport' => true,
+            'class' => yii\swiftmailer\Mailer::class,
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
                 'airplanes' => 'airplane/index',
-                '<action>'=>'site/<action>', 
+                '<action>' => 'site/<action>',
             ]
         ],
         'assetManager' => isset($params["assetManager"]) ? $params["assetManager"] : [
@@ -96,10 +97,15 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
-  // configuration adjustments for 'dev' environment
+// configuration adjustments for 'dev' environment
   $config['bootstrap'][] = 'debug';
   $config['modules']['debug'] = [
       'class' => 'yii\debug\Module',
+      'allowedIPs' => ['*']
+  ];
+  $config['bootstrap'][] = 'gii';
+  $config['modules']['gii'] = [
+      'class' => 'yii\gii\Module',
       'allowedIPs' => ['*']
   ];
 }

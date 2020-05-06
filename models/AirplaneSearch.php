@@ -87,8 +87,9 @@ class AirplaneSearch extends Airplane {
 
     $query->andFilterWhere([
         't.airport_id' => $this->airport_id,
+        't.created_user_id' => $this->created_user_id,
     ]);
-
+    
 //    $dataProvider->sort->attributes['organisation'] = [
 //        'asc' => ['o.name' => SORT_ASC],
 //        'desc' => ['o.name' => SORT_DESC],

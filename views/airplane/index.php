@@ -10,17 +10,11 @@ use yii\helpers\Url;
 
 MapAsset::register($this);
 
-$this->title = 'AirRenty.com';
+$this->title = Yii::t("app", "Airplanes");
 ?>
 <div class="site-index">
   <div class="container-fluid"> 
-
-    <?php if (!Yii::$app->user->isGuest) : ?>
-      <div class="index-actions">
-        <?= Html::a("New", ["create"], ["class" => "btn btn-primary"]); ?> 
-      </div>
-    <?php endif; ?>
-
+    <h2><?= Html::encode($this->title) ?></h2>
     <?php
     echo GridView::widget([
         'dataProvider' => $airplaneDataProvider,
@@ -63,7 +57,7 @@ $this->title = 'AirRenty.com';
             'seats_num',
             [
                 'class' => ActionColumn::class,
-                'visible' => !Yii::$app->user->isGuest,
+                'visible' => Yii::$app->user->isSuperAdmin(),
                 'header' => false,
                 'noWrap' => true,
                 'contentOptions' => [

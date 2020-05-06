@@ -19,9 +19,22 @@
 namespace app\models;
 
 use Yii;
-use app\components\BBNowExpression;
 
 /**
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $web_page
+ * @property int $airport_id
+ * @property string|null $description
+ * @property int|null $order_num
+ * @property int $disabled
+ * @property int|null $created_user_id
+ * @property string|null $created_time
+ * @property string|null $modified_time
+ * @property int|null $modified_user_id
+ *
+ * @property Airport $airport
  *
  * @author baso10
  */
@@ -33,9 +46,9 @@ class Organisation extends BBActiveRecord {
 
   public function rules() {
     return [
-        [['name', 'web_page', 'airport_id'], 'required'],
+        [['name', 'web_page', 'airport_id', 'description'], 'required'],
         [['description'], 'safe'],
-        [['created_time'], 'default', 'value' => new BBNowExpression()],
+        [['order_num'], 'default', 'value' => 1],
     ];
   }
 
@@ -57,18 +70,9 @@ class Organisation extends BBActiveRecord {
   }
 
   public function beforeSave($insert) {
-    if (!$insert) {
-      $this->modified_time = new BBNowExpression();
-      $this->modified_user_id = 1;
+    if (!empty($this->web_page) && strpos($this->web_page, 'http') !== 0) {
+      $this->web_page = 'http://' . $this->web_page;
     }
-
-    $this->order_num = 1;
-    $this->created_user_id = 1;
-
-//    $lastModel = Organisation::find()->orderBy("id desc")->one();
-//    if ($lastModel != null) {
-//      $this->code_name = "" . (($lastModel->id) + 1);
-//    }
 
     return parent::beforeSave($insert);
   }

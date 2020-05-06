@@ -47,10 +47,30 @@ class OrganisationController extends BBController {
                 ],
             ],
         ],
+        'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'delete' => ['post'],
+            ],
+        ],
     ];
   }
 
+  protected function checkIndex() {
+    if (!Yii::$app->user->isSuperAdmin()) {
+      throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    }
+  }
+  
+  protected function checkUpdate($model) {
+    if(!Yii::$app->user->isSuperAdmin() && $model->created_user_id != Yii::$app->user->getId()) {
+      throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    }
+  }
+
   public function actionIndex() {
+
+    $this->checkIndex();
 
     $searchModel = new OrganisationSearch();
     $searchDataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -58,18 +78,6 @@ class OrganisationController extends BBController {
     return $this->render('index', [
                 'searchModel' => $searchModel,
                 'searchDataProvider' => $searchDataProvider,
-    ]);
-  }
-
-  /**
-   * @return string
-   */
-  public function actionView($id) {
-
-    $model = $this->loadModel($id);
-
-    return $this->render('view', [
-                'model' => $model
     ]);
   }
 
@@ -87,8 +95,13 @@ class OrganisationController extends BBController {
 
   public function actionUpdate($id) {
     $model = $this->loadModel($id);
+    
+    $this->checkUpdate($model);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      if (!Yii::$app->user->isSuperAdmin()) {
+        return $this->redirect(['site/account']);
+      }
       return $this->redirect(['index']);
     } else {
       return $this->render('update', [
@@ -99,10 +112,23 @@ class OrganisationController extends BBController {
 
   public function actionDelete($id) {
     $model = $this->loadModel($id);
+    
+    $this->checkUpdate($model);
 
     $model->delete();
 
+    if (!Yii::$app->user->isSuperAdmin()) {
+      return $this->redirect(['site/account']);
+    }
+
     return $this->redirect(['index']);
   }
-
+  
+  public function actionCancel() {
+    if (!Yii::$app->user->isSuperAdmin()) {
+      return $this->redirect(['site/account']);
+    }
+    
+    return parent::actionCancel();
+  }
 }

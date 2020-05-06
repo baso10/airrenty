@@ -26,6 +26,12 @@ use app\models\Airport;
 use app\models\LoginForm;
 use app\models\VerifyEmailForm;
 use app\models\RegistrationForm;
+use app\models\AirplaneSearch;
+use app\models\OrganisationSearch;
+use app\models\PasswordResetRequestForm;
+use app\models\ResetPasswordForm;
+use app\models\ChangePasswordForm;
+use app\models\User;
 
 class SiteController extends BBController {
 
@@ -36,14 +42,14 @@ class SiteController extends BBController {
     return [
         'access' => [
             'class' => AccessControl::className(),
-            'only' => ['logout', 'register'],
+            'only' => ['logout', 'register', 'account'],
             'rules' => [
                 [
                     'actions' => ['register'],
                     'allow' => true,
                 ],
                 [
-                    'actions' => ['logout'],
+                    'actions' => ['logout', 'account', 'changePassword'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -91,7 +97,7 @@ class SiteController extends BBController {
 
     $model = new LoginForm();
     if ($model->load(Yii::$app->request->post()) && $model->login()) {
-      return $this->goBack();
+      return $this->redirect(["site/account"]);
     } else {
       return $this->render('login', [
                   'model' => $model,
@@ -124,9 +130,22 @@ class SiteController extends BBController {
    */
   public function actionRegister($success = null) {
     $model = new RegistrationForm();
+    if (Yii::$app->params["user_register_disabled"]) {
+      Yii::$app->session->setFlash('danger', Yii::t("app", 'Registration is disabled'));
+      return $this->render('registration', [
+                  'model' => $model,
+                  'success' => $success
+      ]);
+    }
     if ($model->load(Yii::$app->request->post()) && $model->register()) {
       Yii::$app->session->setFlash('success', Yii::t("app", 'Success'));
-      return $this->redirect(['register', 'success' => 1]);
+        if (Yii::$app->params["user_enable_email_confirmation"]) {
+        return $this->redirect(['register', 'success' => 1]);
+      } else {
+        $userModel = User::findByUsername($model->email);
+        Yii::$app->user->login($userModel);
+        return $this->redirect(['account']);
+      }
     }
 
     return $this->render('registration', [
@@ -143,7 +162,7 @@ class SiteController extends BBController {
   public function actionRequestPasswordReset() {
     $model = new PasswordResetRequestForm();
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-      if ($model->requestPasswordReset()) {
+      if ($model->sendEmail()) {
         Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
 
         return $this->goHome();
@@ -171,13 +190,35 @@ class SiteController extends BBController {
       throw new BadRequestHttpException($e->getMessage());
     }
 
-    if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-      Yii::$app->session->setFlash('success', 'New password saved.');
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if ($userModel = $model->resetPassword()) {
+        Yii::$app->session->setFlash('success', Yii::t("app", 'New password saved'));
 
-      return $this->goHome();
+        Yii::$app->user->login($userModel);
+
+        return $this->redirect(["site/account"]);
+      }
     }
 
     return $this->render('resetPassword', [
+                'model' => $model,
+    ]);
+  }
+
+  public function actionChangePassword() {
+    $model = new ChangePasswordForm();
+
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if ($userModel = $model->resetPassword()) {
+        Yii::$app->session->setFlash('success', Yii::t("app", 'New password saved'));
+
+        Yii::$app->user->login($userModel);
+
+        return $this->redirect(["site/account"]);
+      }
+    }
+
+    return $this->render('changePassword', [
                 'model' => $model,
     ]);
   }
@@ -204,6 +245,43 @@ class SiteController extends BBController {
 
     Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
     return $this->goHome();
+  }
+
+  public function actionNewAccount() {
+
+    return $this->render('newAccount', [
+    ]);
+  }
+
+  public function actionAccount() {
+
+    $userModel = Yii::$app->user->getModel();
+
+
+    //airplane
+    $airplaneSearchModel = new AirplaneSearch();
+    $airplaneSearchModel->created_user_id = $userModel->id;
+
+    $airplaneDataProvider = $airplaneSearchModel->search(Yii::$app->request->queryParams);
+    $airplaneDataProvider->pagination = false;
+    $airplaneDataProvider->sort = false;
+
+    //orgarnisation
+    $orgarnisationSearchModel = new OrganisationSearch();
+    $orgarnisationSearchModel->created_user_id = $userModel->id;
+
+    $orgarnisationDataProvider = $orgarnisationSearchModel->search(Yii::$app->request->queryParams);
+    $orgarnisationDataProvider->pagination = false;
+    $orgarnisationDataProvider->sort = false;
+
+
+    return $this->render('account', [
+                'userModel' => $userModel,
+                'airplaneSearchModel' => $airplaneSearchModel,
+                'airplaneDataProvider' => $airplaneDataProvider,
+                'orgarnisationSearchModel' => $orgarnisationSearchModel,
+                'orgarnisationDataProvider' => $orgarnisationDataProvider,
+    ]);
   }
 
 }

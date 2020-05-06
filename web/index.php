@@ -1,7 +1,7 @@
 <?php
 
 //load YII_DEBUG and YII_ENV
-$config1 = include(__DIR__ . '/../config/customConfig.php');
+$config1 = include(__DIR__ . '/../customConfig.php');
 // comment out the following two lines when deployed to production
 //defined('YII_DEBUG') or define('YII_DEBUG', true);
 //defined('YII_ENV') or define('YII_ENV', 'dev');

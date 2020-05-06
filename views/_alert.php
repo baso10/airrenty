@@ -2,7 +2,10 @@
 
 use yii\bootstrap4\Alert;
 
-$flashes = Yii::$app->session->getAllFlashes();
+$flashes = [];
+if(!Yii::$app->user->isGuest) {
+  $flashes = Yii::$app->session->getAllFlashes();
+}
 ?>
 <?php if (!empty($flashes)): ?>
   <div class="row" style="margin-top: 5px;">

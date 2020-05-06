@@ -22,10 +22,9 @@ use Yii;
 use app\components\BBController;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\models\Airport;
 use app\models\Airplane;
-use app\models\AirportSearch;
 use app\models\AirplaneSearch;
+use app\models\Organisation;
 
 class AirplaneController extends BBController {
 
@@ -46,7 +45,7 @@ class AirplaneController extends BBController {
                     'roles' => ['@'],
                 ],
                 [
-                    'actions' => ['index', 'view'],
+                    'actions' => ['index', 'view', 'cancel'],
                     'allow' => true,
                 ],
                 [
@@ -61,6 +60,12 @@ class AirplaneController extends BBController {
             ],
         ],
     ];
+  }
+  
+  protected function checkUpdate($model) {
+    if(!Yii::$app->user->isSuperAdmin() && $model->created_user_id != Yii::$app->user->getId()) {
+      throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    }
   }
 
   public function actionIndex() {
@@ -88,6 +93,14 @@ class AirplaneController extends BBController {
 
   public function actionCreate() {
     $model = new Airplane();
+    
+    if(!Yii::$app->user->isSuperAdmin()) {
+      $organisationModel = Organisation::findOne(["created_user_id" => Yii::$app->user->getId()]);
+      if(!empty($organisationModel)) {
+        $model->airport_id = $organisationModel->airport_id;
+        $model->organisation_id = $organisationModel->id;
+      }
+    }
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['view', 'id' => $model->code_name]);
@@ -100,6 +113,8 @@ class AirplaneController extends BBController {
 
   public function actionUpdate($id) {
     $model = $this->loadModel($id);
+    
+    $this->checkUpdate($model);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['view', 'id' => $model->code_name]);
@@ -113,6 +128,8 @@ class AirplaneController extends BBController {
   public function actionDelete($id) {
     $model = $this->loadModel($id);
 
+    $this->checkUpdate($model);
+    
     $model->delete();
 
     return $this->redirect(['index']);
@@ -124,6 +141,14 @@ class AirplaneController extends BBController {
       throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
     }
     return $model;
+  }
+  
+  public function actionCancel() {
+    if (!Yii::$app->user->isSuperAdmin()) {
+      return $this->redirect(['site/account']);
+    }
+    
+    return parent::actionCancel();
   }
 
 }
