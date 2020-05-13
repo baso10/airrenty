@@ -3,8 +3,6 @@
 
 use yii\web\View;
 use app\assets\MapAsset;
-use kartik\grid\GridView;
-use kartik\grid\ActionColumn;
 
 MapAsset::register($this);
 
@@ -21,7 +19,7 @@ $this->title = 'AirRenty.com';
     <div id="map-wrapper">
       <div id="map"></div>
     </div>
-    
+
 
     <?php foreach ($airportModels as $airportModel) : ?>
       <div id="map-popup-<?= $airportModel->id ?>" style="display: none;">
@@ -36,7 +34,17 @@ $this->title = 'AirRenty.com';
     <?php ob_start(); ?>
     <script>
 
-      var map = L.map('map').setView([46.7985, 8.0318], 8);
+<?php
+if (Yii::$app->language == "sl") {
+  echo "var coord = [46.119944, 14.815333];";
+  echo "var zoom = 8.5;";
+} else {
+  echo "var coord = [46.7985, 8.0318];";
+  echo "var zoom = 8;";
+}
+?>
+
+      var map = L.map('map', {zoomSnap: 0.25}).setView(coord, zoom);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

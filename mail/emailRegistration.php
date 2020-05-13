@@ -9,7 +9,7 @@ $verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'to
     <tr>
       <td>
         <h1 style="margin: 0;padding: 0;display: block;font-family: Helvetica;font-size: 40px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -1px;text-align: left;color: #606060;">
-          Welcome to <?= Yii::$app->params["site_name"] ?>
+          <?= Yii::t("email", "Welcome to") ?> <?= Yii::$app->params["site_name"] ?>
         </h1>
 
         <div style="padding: 20px; border: 1px solid rgb(204, 204, 204); border-radius: 5px;">

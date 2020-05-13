@@ -94,6 +94,9 @@ $config = [
             'kartik\select2\Select2' => ['pluginLoading' => false]
         ],
     ],
+    'on '. yii\web\Application::EVENT_BEFORE_REQUEST => [
+        app\components\BBLanguageSelector::class, 'setLanguage'
+    ] ,
 ];
 
 if (YII_ENV_DEV) {

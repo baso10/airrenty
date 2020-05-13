@@ -82,8 +82,15 @@ class SiteController extends BBController {
    */
   public function actionIndex() {
 
+    $country = "CH"; //default
+    $lang = Yii::$app->language;
+
+    if ($lang == "sl") {
+      $country = "SI";
+    }
+
     /* @var $airportModels Airport[] */
-    $airportModels = Airport::findAll(["country" => "CH"]);
+    $airportModels = Airport::findAll(["country" => $country]);
 
     return $this->render('index', [
                 "airportModels" => $airportModels,
@@ -139,7 +146,7 @@ class SiteController extends BBController {
     }
     if ($model->load(Yii::$app->request->post()) && $model->register()) {
       Yii::$app->session->setFlash('success', Yii::t("app", 'Success'));
-        if (Yii::$app->params["user_enable_email_confirmation"]) {
+      if (Yii::$app->params["user_enable_email_confirmation"]) {
         return $this->redirect(['register', 'success' => 1]);
       } else {
         $userModel = User::findByUsername($model->email);

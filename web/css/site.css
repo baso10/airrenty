@@ -295,3 +295,7 @@ ul.pagination li {
 .field-loginform-rememberme {
   display: inline-block;
 }
+.footer-select-country {
+  float: left;
+  margin-left: 15px;
+}

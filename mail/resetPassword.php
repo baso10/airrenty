@@ -9,7 +9,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 't
     <tr>
       <td>
         <h1 style="margin: 0;padding: 0;display: block;font-family: Helvetica;font-size: 40px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -1px;text-align: left;color: #606060;">
-          Reset password
+          <?= Yii::t("email", "Reset password") ?>
         </h1>
 
         <div style="padding: 20px; border: 1px solid rgb(204, 204, 204); border-radius: 5px;">
@@ -18,7 +18,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 't
               <td>
                 <p style="color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;">
 
-                  <p>Follow the link below to reset your password:</p>
+                  <p><?= Yii::t("email", "Follow the link below to reset your password") ?>:</p>
                   <br/>
                   <?= Html::a(Html::encode($resetLink), $resetLink) ?>
 
