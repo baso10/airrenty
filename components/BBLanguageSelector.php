@@ -28,7 +28,7 @@ use Yii;
  */
 class BBLanguageSelector extends Behavior {
 
-  public function setLanguage() {
+  public static function setLanguage() {
 
     $countryGET = Yii::$app->request->get("country");
     if (!empty($countryGET)) {
